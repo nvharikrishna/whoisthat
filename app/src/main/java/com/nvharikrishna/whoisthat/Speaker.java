@@ -3,6 +3,7 @@ package com.nvharikrishna.whoisthat;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,16 +44,17 @@ public class Speaker implements TextToSpeech.OnInitListener {
     }
 
     public void speak(String text){
+        Log.d("SPEAKER", text);
 
         // Speak only if the TTS is ready
         // and the user has allowed speech
 
-        if(ready && allowed) {
+//        if(ready && allowed) {
             HashMap<String, String> hash = new HashMap<String,String>();
             hash.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
                     String.valueOf(AudioManager.STREAM_NOTIFICATION));
             tts.speak(text, TextToSpeech.QUEUE_ADD, hash);
-        }
+//        }
     }
 
     public void pause(int duration){

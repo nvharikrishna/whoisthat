@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.service.notification.NotificationListenerService;
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
@@ -59,11 +60,21 @@ public class MainActivity extends AppCompatActivity {
         };
         toggle.setOnCheckedChangeListener(toggleListener);
 
-        checkTTS();
-        initializeSMSReceiver();
-        registerSMSReceiver();
+//        checkTTS();
+//        initializeSMSReceiver();
+//        registerSMSReceiver();
 
-        launchSpeechRecognizer();
+//        launchSpeechRecognizer();
+
+        IntentFilter recognizeFilter = new IntentFilter();
+        recognizeFilter.addAction("whoisthat.Recognize");
+        RecognizeReceiver recognizeReceiver = new RecognizeReceiver();
+        registerReceiver(recognizeReceiver, recognizeFilter);
+
+        IntentFilter speakFilter = new IntentFilter();
+        speakFilter.addAction(("whoisthat.Speak"));
+        SpeakReceiver speakReceiver = new SpeakReceiver();
+        registerReceiver(speakReceiver, speakFilter);
     }
 
     private void checkTTS(){
@@ -133,10 +144,42 @@ public class MainActivity extends AppCompatActivity {
         speaker.destroy();
     }
 
-    public void launchSpeechRecognizer(){
-        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
-        speechRecognizer.setRecognitionListener(new VoiceCommandListener());
-        speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
+//    public void launchSpeechRecognizer(){
+//        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
+//        speechRecognizer.setRecognitionListener(new VoiceCommandListener());
+//        speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
+//    }
+
+
+    public static class RecognizeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message_to_speak");
+            launchSpeechRecognizer(context, message);
+        }
+
+        public void launchSpeechRecognizer(Context context, String message){
+            SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
+//            Speaker speaker = new Speaker(context);
+            VoiceCommandListener voiceCommandListener = new VoiceCommandListener();
+            speechRecognizer.setRecognitionListener(voiceCommandListener);
+            speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
+        }
+    }
+
+    public static class SpeakReceiver extends BroadcastReceiver {
+
+        private Speaker speaker;
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            speaker = new Speaker(context);
+//            speaker.allow(true);
+            speaker.speak(intent.getStringExtra("message_to_speak"));
+
+        }
     }
 
 }

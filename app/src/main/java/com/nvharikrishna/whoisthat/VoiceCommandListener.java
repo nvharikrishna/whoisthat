@@ -16,6 +16,8 @@ public class VoiceCommandListener implements RecognitionListener {
 
     private static final String TAG = "VoiceCommandListener";
 
+
+
     @Override
     public void onReadyForSpeech(Bundle params) {
         Log.d(TAG, "READY FOR SPEECH");
@@ -54,14 +56,16 @@ public class VoiceCommandListener implements RecognitionListener {
     @Override
     public void onResults(Bundle results) {
         Log.d(TAG, "Received results : " + results.toString());
-        Log.d(TAG, "bundle  score" + results.getString(SpeechRecognizer.CONFIDENCE_SCORES));
-        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
+//        Log.d(TAG, "bundle  score" + results.getString(SpeechRecognizer.CONFIDENCE_SCORES));
+//        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
 
         List<String> speech = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         Log.d(TAG, "speech ===== " + speech);
-        if(null != speech)
-            for(String s : speech)
-            Log.d(TAG, "SPEECH " + s.toString());
+        if(null != speech) {
+            for (String s : speech)
+                Log.d(TAG, "SPEECH " + s.toString());
+        }
+
     }
 
     @Override

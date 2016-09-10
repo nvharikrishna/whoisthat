@@ -11,6 +11,8 @@ import android.provider.Settings;
 import android.renderscript.RenderScript;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 
 public class PushNotificationListenerService extends NotificationListenerService {
@@ -19,7 +21,6 @@ public class PushNotificationListenerService extends NotificationListenerService
     private BroadcastReceiver notificationListener;
 
     public PushNotificationListenerService() {
-//        IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 //        registerReceiver(smsReceiver, intentFilter);
         Log.e(TAG, "Error********************************" );
         Log.d(TAG, "Debug********************************");
@@ -74,6 +75,9 @@ public class PushNotificationListenerService extends NotificationListenerService
         Log.d(TAG, "SBN Package Name" + sbn.getPackageName());
         Log.d(TAG, "Notification Posted");
 
+        Intent pushNotifIntent = new Intent("whoisthat.Recognize");
+        pushNotifIntent.putExtra("message_to_speak", "Hello how are you");
+        sendBroadcast(pushNotifIntent);
     }
 
     @Override
