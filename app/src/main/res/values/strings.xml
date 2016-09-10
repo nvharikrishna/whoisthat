@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Who is That</string>
-    <string name="drawer_switch">Close</string>
+    <string name="drawer_switch">Open</string>
 
     <string name="nav_item_home">Home</string>
     <string name="nav_item_friends">Friends</string>
@@ -23,26 +23,47 @@
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
+    <string name="pref_function_onoff">Who is That On / Off</string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+    <string name="pref_title_listen_time">Listen Time</string>
+    <string-array name="default_listen_time_titles">
+        <item>90</item>
+        <item>80</item>
+        <item>70</item>
+        <item>60</item>
+        <item>50</item>
+        <item>40</item>
+        <item>30</item>
     </string-array>
-    <string-array name="pref_example_list_values">
+    <string-array name="default_listen_time_values">
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
         <item>1</item>
         <item>0</item>
         <item>-1</item>
     </string-array>
 
+
+    <string name="pref_title_listen_list">Continue Listen Options</string>
+    <string-array name="pref_listen_list_titles">
+        <item>Sender Name</item>
+        <item>Sender name + Sender Content</item>
+        <item>Both</item>
+    </string-array>
+    <string-array name="pref_listen_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+<string name="pref_title_notifications_filter">Notifications Filter</string>
+
+
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
