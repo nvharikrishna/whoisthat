@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.system.ErrnoException;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -157,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message_to_speak");
             launchSpeechRecognizer(context, message);
+//            Intent speakIntent = new Intent("whoisthat.Speak");
+//            speakIntent.putExtra("message_to_speak", message);
+//            context.sendBroadcast(speakIntent);
         }
 
         public void launchSpeechRecognizer(Context context, String message){
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             VoiceCommandListener voiceCommandListener = new VoiceCommandListener();
             speechRecognizer.setRecognitionListener(voiceCommandListener);
             speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
+
         }
     }
 
@@ -175,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("SPEAK RECEIVER", "received message ******");
             speaker = new Speaker(context);
 //            speaker.allow(true);
             speaker.speak(intent.getStringExtra("message_to_speak"));
