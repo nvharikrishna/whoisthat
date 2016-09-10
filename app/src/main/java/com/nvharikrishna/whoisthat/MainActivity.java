@@ -8,9 +8,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.service.notification.NotificationListenerService;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.system.ErrnoException;
 import android.telephony.SmsMessage;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         checkTTS();
         initializeSMSReceiver();
         registerSMSReceiver();
+
+        launchSpeechRecognizer();
     }
 
     private void checkTTS(){
@@ -128,5 +133,10 @@ public class MainActivity extends AppCompatActivity {
         speaker.destroy();
     }
 
+    public void launchSpeechRecognizer(){
+        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
+        speechRecognizer.setRecognitionListener(new VoiceCommandListener());
+        speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
+    }
 
 }
