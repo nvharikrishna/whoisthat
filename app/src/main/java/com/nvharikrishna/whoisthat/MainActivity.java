@@ -50,23 +50,23 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, NotificationListenerService.class));
         setContentView(R.layout.activity_main);
 
-        toggle = (ToggleButton)findViewById(R.id.speechToggle);
-        smsText = (TextView)findViewById(R.id.sms_text);
-        smsSender = (TextView)findViewById(R.id.sms_sender);
+       // toggle = (ToggleButton)findViewById(R.id.speechToggle);
+        // smsText = (TextView)findViewById(R.id.sms_text);
+        // smsSender = (TextView)findViewById(R.id.sms_sender);
 
-        toggleListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton view, boolean isChecked) {
-                if(isChecked){
-                    speaker.allow(true);
-                    speaker.speak(getString(R.string.start_speaking));
-                }else{
-                    speaker.speak(getString(R.string.stop_speaking));
-                    speaker.allow(false);
-                }
-            }
-        };
-        toggle.setOnCheckedChangeListener(toggleListener);
+//        toggleListener = new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton view, boolean isChecked) {
+//                if(isChecked){
+//                    speaker.allow(true);
+//                    speaker.speak(getString(R.string.start_speaking));
+//                }else{
+//                    speaker.speak(getString(R.string.stop_speaking));
+//                    speaker.allow(false);
+//                }
+//            }
+//        };
+//        toggle.setOnCheckedChangeListener(toggleListener);
 
 //        checkTTS();
 //        initializeSMSReceiver();

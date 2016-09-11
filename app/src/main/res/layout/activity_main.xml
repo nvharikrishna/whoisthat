@@ -14,42 +14,29 @@
         android:layout_height="match_parent"
         android:name="com.nvharikrishna.whoisthat.SettingsActivity$GeneralPreferenceFragment"
         android:id="@+id/fragment"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_above="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:text="Sequoia::HACK - 2016"
+        android:textAlignment="center"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/sms_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/sms_label"
-        android:textColor="#ffffff"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/sms_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sms_sender"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/none"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
-    />
-
-    <ToggleButton
-        android:id="@+id/speechToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textOff="@string/speech_toggle_on"
-        android:textOn="@string/speech_toggle_off"
-    />
+        android:text="Developed By Hari, Swaroop, Swathi &amp; Prabath "
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/fragment"
+        android:layout_alignEnd="@+id/fragment"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="center" />
 
 </RelativeLayout>
+
