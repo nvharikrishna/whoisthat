@@ -21,13 +21,15 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private final int CHECK_CODE = 0x1;
     private final int LONG_DURATION = 5000;
     private final int SHORT_DURATION = 1200;
 
-    private Speaker speaker;
+    private static Speaker speaker;
 
     private ToggleButton toggle;
     private CompoundButton.OnCheckedChangeListener toggleListener;
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 //        registerSMSReceiver();
 
 //        launchSpeechRecognizer();
+
+        speaker = new Speaker(getApplicationContext());
 
         IntentFilter recognizeFilter = new IntentFilter();
         recognizeFilter.addAction("whoisthat.Recognize");
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(smsReceiver);
+//        unregisterReceiver(smsReceiver);
         speaker.destroy();
     }
 
@@ -164,9 +168,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void launchSpeechRecognizer(Context context, String message){
+            if(!SpeechRecognizer.isRecognitionAvailable(context)){
+                Log.w("Recognizer", "Sorry! speech recognizer is not available now. Please tray again after some time");
+                return;
+            }
             SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
 //            Speaker speaker = new Speaker(context);
-            VoiceCommandListener voiceCommandListener = new VoiceCommandListener();
+            VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2(message);
             speechRecognizer.setRecognitionListener(voiceCommandListener);
             speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
 
@@ -181,11 +189,92 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("SPEAK RECEIVER", "received message ******");
-            speaker = new Speaker(context);
+//            speaker = new Speaker(context);
 //            speaker.allow(true);
             speaker.speak(intent.getStringExtra("message_to_speak"));
 
         }
     }
+
+    public static class VoiceCommandListener2 implements RecognitionListener {
+
+        private static final String TAG = "VoiceCommandListener";
+        String message;
+
+        public VoiceCommandListener2(){
+
+        }
+
+        public VoiceCommandListener2(String message){
+            this.message = message;
+        }
+
+
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+            Log.d(TAG, "READY FOR SPEECH");
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+            Log.d(TAG, "BEGINNING OF SPEECH");
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+            Log.v(TAG, "recevied buffer");
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            Log.d(TAG, "End of speech");
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.e(TAG, "ERROR while recoginzing command. Received error code: " + error);
+
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            Log.d(TAG, "Received results : " + results.toString());
+//        Log.d(TAG, "bundle  score" + results.getString(SpeechRecognizer.CONFIDENCE_SCORES));
+//        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
+
+            List<String> speech = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            Log.d(TAG, "speech ===== " + speech);
+            if(null != speech) {
+                for (String s : speech)
+                    Log.d(TAG, "SPEECH " + s.toString());
+            }
+
+            speaker.speak(message);
+
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+            Log.d(TAG, "Received partial results " + partialResults);
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+            Log.v(TAG, "received event");
+
+        }
+    }
+
 
 }

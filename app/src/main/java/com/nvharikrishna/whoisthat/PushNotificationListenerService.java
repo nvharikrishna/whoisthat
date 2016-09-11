@@ -76,7 +76,7 @@ public class PushNotificationListenerService extends NotificationListenerService
         Log.d(TAG, "Notification Posted");
 
         Intent pushNotifIntent = new Intent("whoisthat.Recognize");
-        pushNotifIntent.putExtra("message_to_speak", "Hello how are you");
+        pushNotifIntent.putExtra("message_to_speak", "You have received message from " + sbn.getNotification().extras.get("android.title"));
         sendBroadcast(pushNotifIntent);
     }
 
