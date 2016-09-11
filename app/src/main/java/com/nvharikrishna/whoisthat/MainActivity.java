@@ -169,14 +169,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message_to_speak");
-            launchSpeechRecognizer(context, message);
+
+            String title_to_speak = intent.getStringExtra("title_to_speak");
+            String message_to_speak = intent.getStringExtra("message_to_speak");
+            launchSpeechRecognizer(context, title_to_speak, message_to_speak);
 //            Intent speakIntent = new Intent("whoisthat.Speak");
 //            speakIntent.putExtra("message_to_speak", message);
 //            context.sendBroadcast(speakIntent);
         }
 
-        public void launchSpeechRecognizer(Context context, String message){
+        public void launchSpeechRecognizer(Context context, String title_to_speak, String message_to_speak){
             if(!SpeechRecognizer.isRecognitionAvailable(context)){
                 Log.w("Recognizer", "Sorry! speech recognizer is not available now. Please tray again after some time");
                 return;
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 //            Speaker speaker = new Speaker(context);
 //            VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2(message);
 //            speechRecognizer.setRecognitionListener(voiceCommandListener);
-            messages.addFirst(message);
+            messages.addFirst(title_to_speak);
             if(speechRecognizerRunning) {
                 Log.d("Recoginzer", "SpeechRecognizer is already running... It will not be invoked again");
                 return;
