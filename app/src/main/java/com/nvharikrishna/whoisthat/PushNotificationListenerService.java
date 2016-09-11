@@ -15,11 +15,7 @@ public class PushNotificationListenerService extends NotificationListenerService
     private BroadcastReceiver notificationListener;
 
     public PushNotificationListenerService() {
-//        registerReceiver(smsReceiver, intentFilter);
-//        Log.e(TAG, "Error********************************" );
         Log.d(TAG, "Debug********************************");
-//        initializeNotificationReceiver();
-//        registerNotificationReceiver();
     }
 
 
@@ -28,24 +24,6 @@ public class PushNotificationListenerService extends NotificationListenerService
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "Debug********************************");
-
-//                Bundle bundle = intent.getExtras();
-//                if(bundle!=null){
-//                    Object[] pdus = (Object[])bundle.get("pdus");
-//                    for(int i=0;i<pdus.length;i++){
-//                        byte[] pdu = (byte[])pdus[i];
-//                        SmsMessage message = SmsMessage.createFromPdu(pdu);
-//                        String text = message.getDisplayMessageBody();
-//                        String sender = getContactName(message.getOriginatingAddress());
-//                        speaker.pause(LONG_DURATION);
-//                        speaker.speak("You have a new message from" + sender + "!");
-//                        speaker.pause(SHORT_DURATION);
-//                        speaker.speak(text);
-//                        smsSender.setText("Message from " + sender);
-//                        smsText.setText(text);
-//                    }
-//                }
-
             }
         };
     }
@@ -55,11 +33,6 @@ public class PushNotificationListenerService extends NotificationListenerService
         registerReceiver(notificationListener, intentFilter);
     }
 
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        // TODO: Return the communication channel to the service.
-//        throw new UnsupportedOperationException("Not yet implemented");
-//    }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn){
@@ -72,7 +45,6 @@ public class PushNotificationListenerService extends NotificationListenerService
         Intent pushNotifIntent = new Intent("whoisthat.Recognize");
         pushNotifIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, sbn.getPackageName());
         Log.d(TAG, "packageName : " +sbn.getPackageName());
-//        Log.d(TAG,"text : " + sbn.getNotification().extras.get("android.text") );
 
         String title;
         String message = "";
