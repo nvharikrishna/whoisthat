@@ -265,6 +265,32 @@ public class MainActivity extends AppCompatActivity {
             speechRecognizerRunning = false;
         }
 
+        private boolean isValidRequest(List<String> speech)
+        {
+            Log.d(TAG, "speech ===== " + speech);
+            if(null != speech) {
+                for (String s : speech){
+                    try
+                    {
+                        Log.d(TAG, "SPEECH " + s.toString());
+                        if(sanitize(s).equals("whoisthat") || sanitize(s).equals("whosthat") )
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "onResults: Caught Exception while sanitizing string");
+                    }
+                }
+            }
+            return false;
+        }
+
+        private String sanitize(String s)
+        {
+            return s.toLowerCase().replace(" ","").replace("'","").replace(",","");
+        }
         @Override
         public void onResults(Bundle results) {
             speechRecognizerRunning = false;
@@ -273,11 +299,9 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
 
             List<String> speech = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            Log.d(TAG, "speech ===== " + speech);
-            if(null != speech) {
-                for (String s : speech)
-                    Log.d(TAG, "SPEECH " + s.toString());
-            }
+
+            if(!isValidRequest(speech))
+                return;
 
             if(!messages.isEmpty()) {
                 speaker.speak(messages.pollFirst());
