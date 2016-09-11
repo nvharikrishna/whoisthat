@@ -1,18 +1,12 @@
 package com.nvharikrishna.whoisthat;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
-import android.os.IBinder;
-import android.provider.Settings;
-import android.renderscript.RenderScript;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 import android.util.Log;
 
 public class PushNotificationListenerService extends NotificationListenerService {
@@ -76,6 +70,7 @@ public class PushNotificationListenerService extends NotificationListenerService
         Log.d(TAG, "Notification Posted");
 
         Intent pushNotifIntent = new Intent("whoisthat.Recognize");
+        pushNotifIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, sbn.getPackageName());
         pushNotifIntent.putExtra("message_to_speak", "You have received message from " + sbn.getNotification().extras.get("android.title"));
         sendBroadcast(pushNotifIntent);
     }

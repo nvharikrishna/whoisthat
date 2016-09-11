@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private final int SHORT_DURATION = 1200;
 
     private static Speaker speaker;
+    private static SpeechRecognizer speechRecognizer;
+    private static BlockingDeque<String> messages = new LinkedBlockingDeque<>();
+    private static boolean speechRecognizerRunning = false;
 
     private ToggleButton toggle;
     private CompoundButton.OnCheckedChangeListener toggleListener;
@@ -70,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
 //        launchSpeechRecognizer();
 
         speaker = new Speaker(getApplicationContext());
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+        VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2();
+        speechRecognizer.setRecognitionListener(voiceCommandListener);
 
         IntentFilter recognizeFilter = new IntentFilter();
         recognizeFilter.addAction("whoisthat.Recognize");
@@ -172,10 +180,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("Recognizer", "Sorry! speech recognizer is not available now. Please tray again after some time");
                 return;
             }
-            SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
+//            SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
 //            Speaker speaker = new Speaker(context);
-            VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2(message);
-            speechRecognizer.setRecognitionListener(voiceCommandListener);
+//            VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2(message);
+//            speechRecognizer.setRecognitionListener(voiceCommandListener);
+            messages.addFirst(message);
+            if(speechRecognizerRunning) {
+                Log.d("Recoginzer", "SpeechRecognizer is already running... It will not be invoked again");
+                return;
+            }
+
+            speechRecognizerRunning = true;
             speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
 
         }
@@ -243,11 +258,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onError(int error) {
             Log.e(TAG, "ERROR while recoginzing command. Received error code: " + error);
-
+            if(error == SpeechRecognizer.ERROR_NO_MATCH){
+                speaker.speak("Sorry! cannot recognize your input. Lets talk later.");
+            }
+            speechRecognizerRunning = false;
         }
 
         @Override
         public void onResults(Bundle results) {
+            speechRecognizerRunning = false;
             Log.d(TAG, "Received results : " + results.toString());
 //        Log.d(TAG, "bundle  score" + results.getString(SpeechRecognizer.CONFIDENCE_SCORES));
 //        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
@@ -259,7 +278,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "SPEECH " + s.toString());
             }
 
-            speaker.speak(message);
+            if(!messages.isEmpty()) {
+                speaker.speak(messages.pollFirst());
+            }
 
         }
 
