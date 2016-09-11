@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.service.notification.NotificationListenerService;
 import android.speech.RecognitionListener;
@@ -13,8 +14,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.system.ErrnoException;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -49,31 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         startService(new Intent(this, NotificationListenerService.class));
         setContentView(R.layout.activity_main);
-
-       // toggle = (ToggleButton)findViewById(R.id.speechToggle);
-        // smsText = (TextView)findViewById(R.id.sms_text);
-        // smsSender = (TextView)findViewById(R.id.sms_sender);
-
-//        toggleListener = new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton view, boolean isChecked) {
-//                if(isChecked){
-//                    speaker.allow(true);
-//                    speaker.speak(getString(R.string.start_speaking));
-//                }else{
-//                    speaker.speak(getString(R.string.stop_speaking));
-//                    speaker.allow(false);
-//                }
-//            }
-//        };
-//        toggle.setOnCheckedChangeListener(toggleListener);
-
-//        checkTTS();
-//        initializeSMSReceiver();
-//        registerSMSReceiver();
-
-//        launchSpeechRecognizer();
-
         speaker = new Speaker(getApplicationContext());
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
         VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2();
@@ -153,29 +127,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        unregisterReceiver(smsReceiver);
         speechRecognizer.destroy();
         speaker.destroy();
     }
-
-//    public void launchSpeechRecognizer(){
-//        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
-//        speechRecognizer.setRecognitionListener(new VoiceCommandListener());
-//        speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
-//    }
 
 
     public static class RecognizeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             String title_to_speak = intent.getStringExtra("title_to_speak");
             String message_to_speak = intent.getStringExtra("message_to_speak");
             launchSpeechRecognizer(context, title_to_speak, message_to_speak);
-//            Intent speakIntent = new Intent("whoisthat.Speak");
-//            speakIntent.putExtra("message_to_speak", message);
-//            context.sendBroadcast(speakIntent);
         }
 
         public void launchSpeechRecognizer(Context context, String title_to_speak, String message_to_speak){
@@ -183,10 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("Recognizer", "Sorry! speech recognizer is not available now. Please tray again after some time");
                 return;
             }
-//            SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
-//            Speaker speaker = new Speaker(context);
-//            VoiceCommandListener2 voiceCommandListener = new VoiceCommandListener2(message);
-//            speechRecognizer.setRecognitionListener(voiceCommandListener);
             messages.addFirst(title_to_speak);
             if(speechRecognizerRunning) {
                 Log.d("Recoginzer", "SpeechRecognizer is already running... It will not be invoked again");
@@ -207,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("SPEAK RECEIVER", "received message ******");
-//            speaker = new Speaker(context);
-//            speaker.allow(true);
             speaker.speak(intent.getStringExtra("message_to_speak"));
 
         }
@@ -216,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class VoiceCommandListener2 implements RecognitionListener {
 
-        private static final String TAG = "VoiceCommandListener";
+        private static final String TAG = "VoiceCommandListener2";
         String message;
 
         public VoiceCommandListener2(){
@@ -297,8 +254,6 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle results) {
             speechRecognizerRunning = false;
             Log.d(TAG, "Received results : " + results.toString());
-//        Log.d(TAG, "bundle  score" + results.getString(SpeechRecognizer.CONFIDENCE_SCORES));
-//        Log.d(TAG, "bundle " + results.getString(SpeechRecognizer.RESULTS_RECOGNITION));
 
             List<String> speech = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
