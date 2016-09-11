@@ -60,8 +60,17 @@
 
 <string name="pref_title_notifications_filter">Notifications Filter</string>
 
-
-
+<string name="pref_title_pause_time">Pause Time</string>
+    <string-array name="pref_pause_time">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="pref_pause_time_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
     <!-- Example settings for Data & Sync -->

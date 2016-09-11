@@ -41,6 +41,15 @@
         android:singleLine="true"
         android:title="@string/pref_title_notifications_filter" />
 
+    <ListPreference
+        android:icon="@mipmap/ic_action_time"
+        android:defaultValue="0"
+        android:entries="@array/pref_pause_time"
+        android:entryValues="@array/pref_pause_time_values"
+        android:key="example_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_pause_time" />
 
 </PreferenceScreen>
 
