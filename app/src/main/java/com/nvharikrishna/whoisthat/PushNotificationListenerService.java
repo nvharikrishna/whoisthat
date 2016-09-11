@@ -76,9 +76,6 @@ public class PushNotificationListenerService extends NotificationListenerService
         pushNotifIntent.putExtra("title_to_speak", title);
         pushNotifIntent.putExtra("message_to_speak", message);
         try {
-            if(PACKAGE_MISSED_CALL.equals(packageName)){
-                Thread.sleep(4000);
-            }
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();

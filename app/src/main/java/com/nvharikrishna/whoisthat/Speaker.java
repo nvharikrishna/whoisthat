@@ -50,6 +50,11 @@ public class Speaker implements TextToSpeech.OnInitListener {
             hash.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
                     String.valueOf(AudioManager.STREAM_NOTIFICATION));
             tts.speak(text, TextToSpeech.QUEUE_ADD, hash);
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void pause(int duration){
