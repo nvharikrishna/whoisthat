@@ -71,13 +71,48 @@ public class PushNotificationListenerService extends NotificationListenerService
 
         Intent pushNotifIntent = new Intent("whoisthat.Recognize");
         pushNotifIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, sbn.getPackageName());
-        pushNotifIntent.putExtra("message_to_speak", "You have received message from " + sbn.getNotification().extras.get("android.title"));
+        Log.d(TAG, "packageName : " +sbn.getPackageName());
+//        Log.d(TAG,"text : " + sbn.getNotification().extras.get("android.text") );
+
+        String title;
+        String message = "";
+        final String PACKAGE_WHATSAPP = "com.whatsapp";
+        final String PACKAGE_MESSAGE = "com.google.android.apps.messaging";
+        final String PACKAGE_MISSED_CALL = "com.android.server.telecom";
+        final String PACKAGE_CALL = "com.android.dialer";
+
+        String packageName = sbn.getPackageName();
+        switch(packageName){
+            case PACKAGE_WHATSAPP:
+                title = sbn.getNotification().extras.get("android.title") + " whatsapped you";
+                message = sbn.getNotification().extras.get("android.text").toString();
+                break;
+            case PACKAGE_MESSAGE :
+                title = sbn.getNotification().extras.get("android.title") + " messaged you";
+                message = sbn.getNotification().extras.get("android.text").toString();
+                break;
+            case PACKAGE_MISSED_CALL :
+                title = "Missed a call from " + sbn.getNotification().extras.get("android.text");
+                break;
+            default:
+                title = "Received Notification from " + sbn.getNotification().extras.get("android.title");
+        }
+
+        Log.d(TAG, "title : " +title);
+        Log.d(TAG, "message : " +message);
+
+        pushNotifIntent.putExtra("title_to_speak", title);
+        pushNotifIntent.putExtra("message_to_speak", message);
         try {
-            Thread.sleep(1800);
+            if(PACKAGE_MISSED_CALL.equals(packageName)){
+                Thread.sleep(4000);
+            }
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        sendBroadcast(pushNotifIntent);
+        if(!PACKAGE_CALL.equals(packageName))
+            sendBroadcast(pushNotifIntent);
     }
 
     @Override
